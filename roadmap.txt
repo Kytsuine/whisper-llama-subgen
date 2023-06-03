@@ -1,0 +1,41 @@
+Workflow (finished)
+
+Input file > ffmpeg > wav > WhisperX > srt (initial) > LLaMa (with helper script) > srt (finished)
+
+Steps:
+1. Design and develop each individual script
+2. Connect the scripts
+3. QA test completed workflow
+4. ??Build GUI??
+5. Generalize and document so it's replicable on other machines
+6. Build installer
+
+1:
+	a: Access input file
+		(calling it $INPUT)
+	b: Convert input file to wav with ffmpeg
+		ffmpeg -i $INPUT wav_out.wav
+	c: Transcribe wav_out.wav with WhisperX (currently using medium.en model because of my computer's vram limitations)
+		whisperx .\wav_out.wav --model medium.en --compute_type int8 --language en --output_format srt
+	d: Send outputted SRT through LLaMa for editing
+		???
+	e: Rename output final srt to initial filename (plus language code)
+		mv wav_out_LLaMaed.srt $INPUT.en.srt
+2:	
+	a: Design master script to reference and pass data between scripts
+	b: Check for where data may need modification between scripts
+	c: Modify master script to ensure seamless flow between scripts
+3:	QA testing
+4:	
+	a: Consider GUI scope and viability for scope of project
+	b: ??Create GUI with input selector that runs master script??
+5:	Document/generalize
+	a: Give thorough system requirements, along with adaptations to make for lower-specced systems (ie, LLaMa 7b or Whisper small.en/tiny.en)
+	b: Bold and large text at top of README: LLaMa weights must be obtained separately! Distribution by third parties is not permitted (so we can't download them for you, or provide a link other than the one to their official form)
+6:	Installer
+	a: Install/confirm presence of WhisperX, download medium.en model (possibly ask user for preferred model?)
+	b: Install/confirm presence of  LLaMa handler, request model download location
+	c: Install/confirm presence of ffmpeg
+	
+Workflow (Bazarr API integration)
+Bazarr queue > (1 hour passes) > master script from above

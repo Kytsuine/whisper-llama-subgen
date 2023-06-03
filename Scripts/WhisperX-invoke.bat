@@ -1,0 +1,1 @@
+whisperX .\whisper_input.wav --model medium.en --compute_type int8 --output_format srt
